@@ -6,6 +6,9 @@
   };
 
   outputs = {self, ...}: {
-    homeManagerModule = import ./module.nix self;
+    lib = import ./lib;
+    homeManagerModule = import ./module.nix {
+      libStyler = self.lib;
+    };
   };
 }
