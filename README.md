@@ -34,9 +34,9 @@
 3. If an app is not supported by styler, you can manually access colors with
     <!-- TODO -->
     ```nix
-    {inputs, ...}: {
+    {inputs, ...}@args: {
       programs.some-program.settings = {
-        accent = inputs.styler.lib.queryColor "accent"
+        accent = (inputs.styler.lib args).queryColor "accent";
       }
     }
     ```

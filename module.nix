@@ -1,4 +1,4 @@
-{libStyler, ...}: {
+self: {
   pkgs,
   config,
   lib ? pkgs.lib,
@@ -21,14 +21,14 @@ with lib; let
         "magenta"
         "cyan"
         "white"
-        "brightBlack"
-        "brightRed"
-        "brightGreen"
-        "brightYellow"
-        "brightBlue"
-        "brightMagenta"
-        "brightCyan"
-        "brightWhite"
+        "standoutBlack"
+        "standoutRed"
+        "standoutGreen"
+        "standoutYellow"
+        "standoutBlue"
+        "standoutMagenta"
+        "standoutCyan"
+        "standoutWhite"
       ];
     };
   mkHexColorOption = description:
@@ -42,24 +42,30 @@ in {
     enable = mkEnableOption "Global adaptive styler toggle";
     colors = {
       ansi = {
-        fg = mkHexColorOption "Default foreground color";
-        bg = mkHexColorOption "Default background color";
-        black = mkHexColorOption "Black (ANSI index 0)";
-        red = mkHexColorOption "Red (ANSI index 1)";
-        green = mkHexColorOption "Green (ANSI index 2)";
-        yellow = mkHexColorOption "Yellow (ANSI index 3)";
-        blue = mkHexColorOption "Blue (ANSI index 4)";
-        magenta = mkHexColorOption "Magenta (ANSI index 5)";
-        cyan = mkHexColorOption "Cyan (ANSI index 6)";
-        white = mkHexColorOption "White (ANSI index 7)";
-        brightBlack = mkHexColorOption "Bright black (ANSI index 8)";
-        brightRed = mkHexColorOption "Bright red (ANSI index 9)";
-        brightGreen = mkHexColorOption "Bright green (ANSI index A)";
-        brightYellow = mkHexColorOption "Bright yellow (ANSI index B)";
-        brightBlue = mkHexColorOption "Bright blue (ANSI index C)";
-        brightMagenta = mkHexColorOption "Bright magenta (ANSI index D)";
-        brightCyan = mkHexColorOption "Bright cyan (ANSI index E)";
-        brightWhite = mkHexColorOption "Bright white (ANSI index F)";
+        primary = {
+          fg = mkHexColorOption "Default foreground color";
+          bg = mkHexColorOption "Default background color";
+        };
+        normal = {
+          black = mkHexColorOption "Black (ANSI index 0)";
+          red = mkHexColorOption "Red (ANSI index 1)";
+          green = mkHexColorOption "Green (ANSI index 2)";
+          yellow = mkHexColorOption "Yellow (ANSI index 3)";
+          blue = mkHexColorOption "Blue (ANSI index 4)";
+          magenta = mkHexColorOption "Magenta (ANSI index 5)";
+          cyan = mkHexColorOption "Cyan (ANSI index 6)";
+          white = mkHexColorOption "White (ANSI index 7)";
+        };
+        standout = {
+          black = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) black (ANSI index 8)";
+          red = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) red (ANSI index 9)";
+          green = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) green (ANSI index A)";
+          yellow = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) yellow (ANSI index B)";
+          blue = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) blue (ANSI index C)";
+          magenta = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) magenta (ANSI index D)";
+          cyan = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) cyan (ANSI index E)";
+          white = mkHexColorOption "Standout (brighter in dark mode, darker in light mode) white (ANSI index F)";
+        };
       };
       code = {
         unknown = mkNamedColorOption "Unrecognized token";
