@@ -1,4 +1,4 @@
-self: {
+{
   pkgs,
   config,
   lib ? pkgs.lib,
@@ -38,6 +38,10 @@ with lib; let
       type = types.strMatching "^#[0-9A-F]{6}$";
     };
 in {
+  imports = [
+    ./lib
+    ./modules
+  ];
   options.styler = {
     enable = mkEnableOption "Global adaptive styler toggle";
     colors = {

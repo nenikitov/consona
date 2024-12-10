@@ -5,8 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
   };
 
-  outputs = {self, ...}: {
-    lib = import ./lib;
-    homeManagerModule = import ./module.nix self;
+  outputs = {...}: {
+    homeManagerModule = import ./module.nix;
   };
 }
