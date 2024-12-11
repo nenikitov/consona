@@ -25,6 +25,23 @@
     }
     ```
 
+## Creating a new module
+
+All modules must follow this template
+```nix
+{
+  lib,
+  config,
+  ...
+}:
+with config.lib.styler; {
+  options.styler.targets.alacritty.enable = mkTargetOption "Alacritty";
+  config = lib.mkIf (mkTargetCondition "alacritty") {
+    # CONFIG GOES HERE
+  };
+}
+```
+
 ## Usage
 
 1. Configure a theme
@@ -36,7 +53,7 @@
     ```nix
     {inputs, ...}@args: {
       programs.some-program.settings = {
-        accent = (inputs.styler.lib args).queryColor "accent";
+        accent = config.lib.styler.ansiToHex "red";
       }
     }
     ```

@@ -2,9 +2,10 @@
   lib,
   config,
   ...
-}: {
-  options.styler.targets.alacritty = lib.mkEnableOption "theming for alacritty";
-  config = lib.mkIf (config.styler.enable && config.styler.targets.alacritty) (with config.lib.styler; {
+}:
+with config.lib.styler; {
+  options.styler.targets.alacritty.enable = mkTargetOption "Alacritty";
+  config = lib.mkIf (mkTargetCondition "alacritty") {
     programs.alacritty.settings = {
       colors = {
         primary = {
@@ -31,7 +32,9 @@
           cyan = ansiToHex "standoutCyan";
           white = ansiToHex "standoutWhite";
         };
+        # TODO(nenikitov): Look into changing `selection` colors too
       };
+      # TODO(nenikitov): Add `window.opaciry`
     };
-  });
+  };
 }

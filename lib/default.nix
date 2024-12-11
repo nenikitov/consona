@@ -4,11 +4,17 @@
   ...
 }:
 with lib; {
-  config.lib.styler = rec {
-    # mkModule = name: nameHuman: cfg: {
-    #   options.styler.target."${name}" = mkEnableOption "theming for ${nameHuman}" // {default = config.styler.autoEnable;};
-    #   config = mkIf (config.styler.enable && config.styler.target."${name}") cfg;
-    # };
+  lib.styler = {
+    # TODO(nenikitov): Make a `mkModule name nameHuman cfg` that will combine all boilerplate
+    # For whatever reason I'm getting infinite recursion errors?
+
+    mkTargetOption = name:
+      mkEnableOption "theming for ${name}"
+      // {
+        default = config.styler.autoEnable;
+      };
+
+    mkTargetCondition = name: (config.styler.enable && config.styler.targets."${name}".enable);
 
     ansiToHex = color: let
       c = config.styler.colors.ansi;
