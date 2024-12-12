@@ -35,8 +35,8 @@ All modules must follow this template
   ...
 }:
 with config.lib.styler; {
-  options.styler.targets.alacritty.enable = mkTargetOption "Alacritty";
-  config = lib.mkIf (mkTargetCondition "alacritty") {
+  options.styler.targets."APP NAME".enable = mkTargetOption "Human friendly App name";
+  config = lib.mkIf (mkTargetCondition "APP NAME") {
     # CONFIG GOES HERE
   };
 }
