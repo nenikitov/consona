@@ -43,7 +43,8 @@ in {
     ./modules
   ];
   options.styler = {
-    enable = mkEnableOption "Global adaptive styler toggle";
+    enable = mkEnableOption "global adaptive styler toggle";
+    autoEnable = mkEnableOption "auto enable all stler targets";
     colors = {
       ansi = {
         primary = {
