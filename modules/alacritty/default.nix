@@ -3,8 +3,8 @@
   config,
   ...
 }:
-with config.lib.styler; {
-  options.styler.targets.alacritty.enable = mkTargetOption "Alacritty";
+with config.lib.consona; {
+  options.consona.targets.alacritty.enable = mkTargetOption "Alacritty";
   config = lib.mkIf (mkTargetCondition "alacritty") {
     programs.alacritty.settings = {
       colors = {

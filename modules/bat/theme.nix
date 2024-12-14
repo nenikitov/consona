@@ -1,7 +1,7 @@
 # https://youngspe.dev/textmate-grammar-playground/
 # http://www.sublimetext.com/docs/scope_naming.html#color_schemes
 {config, ...}:
-with config.lib.styler;
+with config.lib.consona;
 # xml
   ''
     <?xml version="1.0" encoding="UTF-8"?>
@@ -9,7 +9,7 @@ with config.lib.styler;
 
     <plist version="1.0">
        <dict>
-          <key>name</key><string>Styler</string>
+          <key>name</key><string>Consona</string>
 
           <key>colors</key>
           <dict>

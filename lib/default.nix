@@ -4,20 +4,20 @@
   ...
 }:
 with lib; {
-  lib.styler = {
+  lib.consona = {
     # TODO(nenikitov): Make a `mkModule name nameHuman cfg` that will combine all boilerplate
     # For whatever reason I'm getting infinite recursion errors?
 
     mkTargetOption = name:
       mkEnableOption "theming for ${name}"
       // {
-        default = config.styler.autoEnable;
+        default = config.consona.autoEnable;
       };
 
-    mkTargetCondition = name: (config.styler.enable && config.styler.targets."${name}".enable);
+    mkTargetCondition = name: (config.consona.enable && config.consona.targets."${name}".enable);
 
     ansiToHex = color: let
-      c = config.styler.colors.ansi;
+      c = config.consona.colors.ansi;
     in
       {
         inherit (c.primary) "fg" "bg";

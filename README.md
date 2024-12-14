@@ -1,4 +1,6 @@
-# adaptive-styler
+# Consona
+
+Nix helper that applies a unified theme to all applications.
 
 ## Installation
 
@@ -8,8 +10,8 @@
     {
       inputs = {
         # ...
-        styler = {
-          url = "github:nenikitov/adaptive-styler"
+        consona = {
+          url = "github:nenikitov/consona"
           inputs.nixpkgs.follows = "nixpkgs"
         };
       };
@@ -18,7 +20,7 @@
           # ...
           modules = [
             # ...
-            inputs.styler.homeManagerModule
+            inputs.consona.homeManagerModule
           ];
         };
       };
@@ -34,8 +36,8 @@ All modules must follow this template
   config,
   ...
 }:
-with config.lib.styler; {
-  options.styler.targets."APP NAME".enable = mkTargetOption "Human friendly App name";
+with config.lib.consona; {
+  options.consona.targets."APP NAME".enable = mkTargetOption "Human friendly App name";
   config = lib.mkIf (mkTargetCondition "APP NAME") {
     # CONFIG GOES HERE
   };
@@ -48,12 +50,12 @@ with config.lib.styler; {
     <!-- TODO -->
 2. Select which apps to style
     <!-- TODO -->
-3. If an app is not supported by styler, you can manually access colors with
+3. If an app is not supported by Consona, you can manually access colors with
     <!-- TODO -->
     ```nix
     {inputs, ...}@args: {
       programs.some-program.settings = {
-        accent = config.lib.styler.ansiToHex "red";
+        accent = config.lib.consona.ansiToHex "red";
       }
     }
     ```

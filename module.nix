@@ -5,7 +5,7 @@
   ...
 }:
 with lib; let
-  cfg = config.styler;
+  cfg = config.consona;
   mkNamedColorOption = description: default:
     mkOption {
       inherit description;
@@ -42,8 +42,8 @@ in {
     ./lib
     ./modules
   ];
-  options.styler = {
-    enable = mkEnableOption "global adaptive styler toggle";
+  options.consona = {
+    enable = mkEnableOption "global Consona toggle";
     autoEnable = mkEnableOption "auto enable all stler targets";
     colors = {
       ansi = {
