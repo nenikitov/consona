@@ -2,10 +2,20 @@
   lib,
   config,
   ...
-}:
-with config.lib.consona; {
+}: let
+  inherit
+    (lib)
+    mkIf
+    ;
+  inherit
+    (config.lib.consona)
+    mkTargetOption
+    mkTargetCondition
+    ansiToHex
+    ;
+in {
   options.consona.targets.alacritty.enable = mkTargetOption "Alacritty";
-  config = lib.mkIf (mkTargetCondition "alacritty") {
+  config = mkIf (mkTargetCondition "alacritty") {
     programs.alacritty.settings = {
       colors = {
         primary = {
@@ -34,7 +44,7 @@ with config.lib.consona; {
         };
         # TODO(nenikitov): Look into changing `selection` colors too
       };
-      # TODO(nenikitov): Add `window.opaciry`
+      # TODO(nenikitov): Add `window.opacity`
     };
   };
 }
