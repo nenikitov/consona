@@ -1,4 +1,4 @@
-{...} @ args: let
+args: let
   libConsona = import ../../lib args;
   inherit (libConsona) query;
   inherit (libConsona.transform) hex;

@@ -47,6 +47,11 @@ in {
       };
 
       # TODO(nenikitov): Add semantic colors, ui colors, etc
+      code = {
+        # Primitives
+        # Tokens
+        # Markup
+      };
     };
   };
 }

@@ -29,19 +29,21 @@ Nix helper that applies a unified theme to all applications.
 
 ## Creating a new module
 
-All modules must follow this template
+Here is an example module that can be followed as a template
 ```nix
-{
-  lib,
-  config,
-  ...
-}:
-with config.lib.consona; {
-  options.consona.targets."APP NAME".enable = mkTargetOption "Human friendly App name";
-  config = lib.mkIf (mkTargetCondition "APP NAME") {
-    # CONFIG GOES HERE
-  };
-}
+args: let
+  libConsona = import ../../lib args;
+  inherit (libConsona) query;
+  inherit (libConsona.transform) hex;
+in
+  libConsona.mkModule {
+    name = "alacritty";
+    nameHuman = "Alacritty";
+    cfg = {
+      programs.alacritty.settings.colors.primary.background = hex (query "bg");
+      };
+    };
+  }
 ```
 
 ## Usage

@@ -1,0 +1,5 @@
+{
+  imports = [
+    ./syntax-highlighting.nix
+  ];
+}

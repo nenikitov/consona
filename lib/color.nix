@@ -108,10 +108,12 @@
     # TODO(nenikitov): Refactor this to pipes
     _toDec = s: builtins.foldl' (acc: n: acc * 16 + n) 0 (builtins.map transform._parseDigit (lib.stringToCharacters s));
 
-    hex = {
+    hexNoHash = {
       r,
       g,
       b,
-    }: "#${lib.toHexString r}${lib.toHexString g}${lib.toHexString b}";
+    }: "${lib.toHexString r}${lib.toHexString g}${lib.toHexString b}";
+
+    hex = c: "#${transform.hexNoHash c}";
   };
 }
