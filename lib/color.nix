@@ -22,9 +22,9 @@
     ];
     color = types._mkParsersOptionType {
       name = "color";
-      description = "color in one of these formats: '#123', '#123456'";
+      description = ''color in one of these formats: "#123", "#123456", {r=255; g=255; b=255;}'';
       parsers = [
-        # '#123' format
+        # "#123" format
         (x: let
           match = builtins.match "#([[:xdigit:]])([[:xdigit:]])([[:xdigit:]])" x;
           component = i: transform._toDec "${builtins.elemAt match i}${builtins.elemAt match i}";
@@ -36,7 +36,7 @@
             b = component 2;
           }
           else null)
-        # '#123456' format
+        # "#123456" format
         (x: let
           match = builtins.match "#([[:xdigit:]]{2})([[:xdigit:]]{2})([[:xdigit:]]{2})" x;
           component = i: transform._toDec (builtins.elemAt match i);
@@ -47,6 +47,13 @@
             g = component 1;
             b = component 2;
           }
+          else null)
+        # {r=255; g=255; b=255;} format
+        (x: let
+          isRgbComponent = c: builtins.isInt (x."${c}" or null) && x."${c}" > 0 && x."${c}" < 256;
+        in
+          if (builtins.isAttrs x && isRgbComponent "r" && isRgbComponent "g" && isRgbComponent "b")
+          then {inherit (x) r g b;}
           else null)
       ];
     };
@@ -100,5 +107,11 @@
       or (throw "Not a hex digit ${c}");
     # TODO(nenikitov): Refactor this to pipes
     _toDec = s: builtins.foldl' (acc: n: acc * 16 + n) 0 (builtins.map transform._parseDigit (lib.stringToCharacters s));
+
+    hex = {
+      r,
+      g,
+      b,
+    }: "#${lib.toHexString r}${lib.toHexString g}${lib.toHexString b}";
   };
 }

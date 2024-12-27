@@ -1,9 +1,7 @@
 {...} @ args: let
   libConsona = import ../../lib args;
-  inherit
-    (libConsona)
-    ansiToHex
-    ;
+  inherit (libConsona) query;
+  inherit (libConsona.transform) hex;
 in
   libConsona.mkModule {
     name = "alacritty";
@@ -12,28 +10,28 @@ in
       programs.alacritty.settings = {
         colors = {
           primary = {
-            background = ansiToHex "bg";
-            foreground = ansiToHex "fg";
+            background = hex (query "bg");
+            foreground = hex (query "fg");
           };
           normal = {
-            black = ansiToHex "black";
-            red = ansiToHex "red";
-            green = ansiToHex "green";
-            yellow = ansiToHex "yellow";
-            blue = ansiToHex "blue";
-            magenta = ansiToHex "magenta";
-            cyan = ansiToHex "cyan";
-            white = ansiToHex "white";
+            black = hex (query "black");
+            red = hex (query "red");
+            green = hex (query "green");
+            yellow = hex (query "yellow");
+            blue = hex (query "blue");
+            magenta = hex (query "magenta");
+            cyan = hex (query "cyan");
+            white = hex (query "white");
           };
           bright = {
-            black = ansiToHex "standoutBlack";
-            red = ansiToHex "standoutRed";
-            green = ansiToHex "standoutGreen";
-            yellow = ansiToHex "standoutYellow";
-            blue = ansiToHex "standoutBlue";
-            magenta = ansiToHex "standoutMagenta";
-            cyan = ansiToHex "standoutCyan";
-            white = ansiToHex "standoutWhite";
+            black = hex (query "standoutBlack");
+            red = hex (query "standoutRed");
+            green = hex (query "standoutGreen");
+            yellow = hex (query "standoutYellow");
+            blue = hex (query "standoutBlue");
+            magenta = hex (query "standoutMagenta");
+            cyan = hex (query "standoutCyan");
+            white = hex (query "standoutWhite");
           };
           # TODO(nenikitov): Look into changing `selection` colors too
         };
@@ -41,37 +39,3 @@ in
       };
     };
   }
-#   options.consona.targets.alacritty.enable = mkTargetOption "Alacritty";
-#   config = mkIf (mkTargetCondition "alacritty") {
-#     programs.alacritty.settings = {
-#       colors = {
-#         primary = {
-#           background = ansiToHex "bg";
-#           foreground = ansiToHex "fg";
-#         };
-#         normal = {
-#           black = ansiToHex "black";
-#           red = ansiToHex "red";
-#           green = ansiToHex "green";
-#           yellow = ansiToHex "yellow";
-#           blue = ansiToHex "blue";
-#           magenta = ansiToHex "magenta";
-#           cyan = ansiToHex "cyan";
-#           white = ansiToHex "white";
-#         };
-#         bright = {
-#           black = ansiToHex "standoutBlack";
-#           red = ansiToHex "standoutRed";
-#           green = ansiToHex "standoutGreen";
-#           yellow = ansiToHex "standoutYellow";
-#           blue = ansiToHex "standoutBlue";
-#           magenta = ansiToHex "standoutMagenta";
-#           cyan = ansiToHex "standoutCyan";
-#           white = ansiToHex "standoutWhite";
-#         };
-#         # TODO(nenikitov): Look into changing `selection` colors too
-#       };
-#       # TODO(nenikitov): Add `window.opacity`
-#     };
-#   };
-# }

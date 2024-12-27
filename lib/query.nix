@@ -1,5 +1,5 @@
 {config, ...}: {
-  ansiToHex = color:
+  query = color:
     with config.consona.colors.palette;
       {
         inherit (primary) "fg" "bg";
