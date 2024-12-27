@@ -1,6 +1,6 @@
 {
   imports = [
-    ../lib
+    ./options-palette.nix
     ../modules
   ];
 }

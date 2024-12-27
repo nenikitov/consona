@@ -1,6 +1,6 @@
 {config, ...}: {
   ansiToHex = color:
-    with config.consona.colors.ansi;
+    with config.consona.colors.palette;
       {
         inherit (primary) "fg" "bg";
         inherit (normal) "black" "red" "green" "yellow" "blue" "magenta" "cyan" "white";
