@@ -3,7 +3,7 @@
   config,
   lib ? pkgs.lib,
   ...
-}:
+} @ args:
 with lib; let
   cfg = config.consona;
   mkNamedColorOption = description: default:
@@ -39,7 +39,6 @@ with lib; let
     };
 in {
   imports = [
-    ./lib
     ./modules
   ];
   options.consona = {
