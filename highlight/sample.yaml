@@ -1,0 +1,33 @@
+# Sample yaml code
+name: John
+familyName: "Doe"
+age: 30
+isAdmin: true
+address:
+  city: Springfield
+  zip: 62701
+  apartment: null
+
+food:
+  - apple
+  - banana
+  - name: "Unknown \n"
+    taste: sweet
+
+list: [10, 20]
+object: {name: "John"}
+
+description: |
+  Multiline string
+  is here
+
+descriptionOther: >
+  Other multiline string string
+  is here
+
+anchor: &anchor
+  color: "blue"
+
+items:
+  - name: "Shirt"
+    <<: *anchor

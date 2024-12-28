@@ -1,0 +1,19 @@
+// Sample json code
+{
+  "name": "John",
+  "age": 30,
+  "isAdmin": true,
+  "address": {
+    "city": "Springfield",
+    "zip": 62701,
+    "apartment": null
+  },
+  "food": [
+    "apple",
+    "banana",
+    {
+      "name": "Unknown\n",
+      "taste": "sweet"
+    }
+  ]
+}

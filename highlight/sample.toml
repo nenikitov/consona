@@ -1,0 +1,24 @@
+# Sample toml code
+[owner]
+name = "John Doe"
+email = "johndoe@example.com"
+
+[database]
+server = "localhost"
+ports = [8000, 8001, 8002]
+enabled = true
+
+[servers]
+  [servers.alpha]
+  ip = "192.168.1.1"
+  port = 8080
+
+[[products]]
+name = "Laptop"
+price = 999.99
+tags = ["electronics", "computers"]
+
+[[products]]
+name = "Smartphone"
+price = 699.99
+tags = ["electronics", "mobile"]
