@@ -46,12 +46,24 @@ in {
         };
       };
 
-      # TODO(nenikitov): Add semantic colors, ui colors, etc
       code = {
-        # Primitives
-        # Tokens
-        # Markup
+        # TODO(nenikitov): Tweak this if necessary, not sure about all of these for now
+        comment = mkAnsiOption "Comment, Docstring";
+        literalText = mkAnsiOption "Character, String, Path, URL";
+        literalNumber = mkAnsiOption "Integer, Float";
+        literalLanguage = mkAnsiOption "Boolean, Null";
+        typePrimitive = mkAnsiOption "Boolean, Integer, Float, Enum variant";
+        typeComplex = mkAnsiOption "Class, Interface, Enum, XML tag";
+        typeModule = mkAnsiOption "Namespace, Module, Package, Globally exposed language variables";
+        functionNative = mkAnsiOption "Funciton, Method, Command";
+        functionMeta = mkAnsiOption "Macro callable as function, Alias";
+        variable = mkAnsiOption "Variable, Constant, Parameter, Property, Lifetime, Label";
+        keywordLanguage = mkAnsiOption "Declaration marker, Flow control, Compiler directive, Operator that is a word (`and`, `new`)";
+        keywordOperator = mkAnsiOption "Operator that is a symbol (`=`, `?`, `.`)";
+        keywordDelimiter = mkAnsiOption "Object groups and separators, namespace access";
       };
+
+      # TODO(nenikitov): Add UI colors, and more
     };
   };
 }
