@@ -33,14 +33,14 @@ Here is an example module that can be followed as a template
 ```nix
 args: let
   libConsona = import ../../lib args;
-  inherit (libConsona) query;
+  inherit (libConsona) palette;
   inherit (libConsona.transform) hex;
 in
   libConsona.mkModule {
     name = "alacritty";
     nameHuman = "Alacritty";
     cfg = {
-      programs.alacritty.settings.colors.primary.background = hex (query "bg");
+      programs.alacritty.settings.colors.primary.background = hex palette.bg;
       };
     };
   }

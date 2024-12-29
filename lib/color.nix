@@ -1,8 +1,6 @@
 {lib, ...}: rec {
   types = {
-    ansi = lib.types.enum [
-      "fg"
-      "bg"
+    ansiList = [
       "black"
       "red"
       "green"
@@ -20,6 +18,8 @@
       "standoutCyan"
       "standoutWhite"
     ];
+
+    ansi = lib.types.enum (["fg" "bg"] ++ types.ansiList);
     color = types._mkParsersOptionType {
       name = "color";
       description = ''color in one of these formats: "#123", "#123456", {r=255; g=255; b=255;}'';
@@ -115,5 +115,10 @@
     }: "${lib.toHexString r}${lib.toHexString g}${lib.toHexString b}";
 
     hex = c: "#${transform.hexNoHash c}";
+
+    ansi = c:
+      if c == "fg" || c == "bg"
+      then null
+      else (lib.lists.findFirstIndex (c': c == c') null types.ansiList);
   };
 }

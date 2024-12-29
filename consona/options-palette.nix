@@ -52,6 +52,7 @@ in {
         literalText = mkAnsiOption "Character, String, Path, URL";
         literalNumber = mkAnsiOption "Integer, Float";
         literalLanguage = mkAnsiOption "Boolean, Null";
+        literalEscape = mkAnsiOption "Escaped character, Format placeholder, Unit";
         typePrimitive = mkAnsiOption "Boolean, Integer, Float, Enum variant";
         typeComplex = mkAnsiOption "Class, Interface, Enum, XML tag";
         typeModule = mkAnsiOption "Namespace, Module, Package, Globally exposed language variables";
