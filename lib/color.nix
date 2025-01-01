@@ -112,7 +112,9 @@
       r,
       g,
       b,
-    }: "${lib.toHexString r}${lib.toHexString g}${lib.toHexString b}";
+    }: let
+      toHex = n: lib.fixedWidthString 2 "0" (lib.toHexString n);
+    in "${toHex r}${toHex g}${toHex b}";
 
     hex = c: "#${transform.hexNoHash c}";
 
