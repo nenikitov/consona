@@ -13,6 +13,11 @@
       example = "standoutGreen";
       type = libConsona.types.ansi;
     };
+  mkCodeOption = description: {
+    color = mkAnsiOption "Foreground color for ${description}";
+    bold = mkEnableOption "Bold style for ${description}" // {default = false;};
+    italic = mkEnableOption "Italic style for ${description}" // {default = false;};
+  };
 in {
   options.consona = {
     enable = mkEnableOption "global Consona toggle";
@@ -48,20 +53,20 @@ in {
 
       code = {
         # TODO(nenikitov): Tweak this if necessary, not sure about all of these for now
-        comment = mkAnsiOption "Comment, Docstring";
-        literalText = mkAnsiOption "Character, String, Path, URL";
-        literalNumber = mkAnsiOption "Integer, Float";
-        literalLanguage = mkAnsiOption "Boolean, Null";
-        literalEscape = mkAnsiOption "Escaped character, Format placeholder, Unit";
-        typePrimitive = mkAnsiOption "Boolean, Integer, Float, Enum variant";
-        typeComplex = mkAnsiOption "Class, Interface, Enum, XML tag";
-        typeModule = mkAnsiOption "Namespace, Module, Package, Globally exposed language variables";
-        functionNative = mkAnsiOption "Funciton, Method, Command";
-        functionMeta = mkAnsiOption "Macro callable as function, Alias";
-        variable = mkAnsiOption "Variable, Constant, Parameter, Property, Lifetime, Label";
-        keywordLanguage = mkAnsiOption "Declaration marker, Flow control, Compiler directive, Operator that is a word (`and`, `new`)";
-        keywordOperator = mkAnsiOption "Operator that is a symbol (`=`, `?`, `.`)";
-        keywordDelimiter = mkAnsiOption "Object groups and separators, namespace access";
+        comment = mkCodeOption "comment, docstring";
+        literalText = mkCodeOption "character, string, path, url";
+        literalNumber = mkCodeOption "integer, float";
+        literalLanguage = mkCodeOption "boolean, null";
+        literalEscape = mkCodeOption "escaped character, format placeholder, unit";
+        typePrimitive = mkCodeOption "boolean, integer, float, enum variant";
+        typeComplex = mkCodeOption "class, interface, enum, xml tag";
+        typeModule = mkCodeOption "namespace, module, package, globally exposed language variables";
+        functionNative = mkCodeOption "funciton, method, command";
+        functionMeta = mkCodeOption "macro callable as function, alias";
+        variable = mkCodeOption "variable, constant, parameter, property, lifetime, label";
+        keywordLanguage = mkCodeOption "declaration marker, flow control, compiler directive, operator that is a word (`and`, `new`)";
+        keywordOperator = mkCodeOption "operator that is a symbol (`=`, `?`, `.`)";
+        keywordDelimiter = mkCodeOption "object groups and separators, namespace access";
       };
 
       # TODO(nenikitov): Add UI colors, and more
