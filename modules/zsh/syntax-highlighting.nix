@@ -1,36 +1,8 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
-  inherit (libConsona) semantic;
-  inherit (libConsona.transform) ansi;
-
-  zshHighlight = {
-    color,
-    bold,
-    italic,
-  }:
-    builtins.concatStringsSep "," (builtins.filter (e: !builtins.isNull e) [
-      "fg=${
-        let
-          c = ansi color;
-        in
-          if builtins.isNull c
-          then "none"
-          else builtins.toString c
-      }"
-      (
-        if bold
-        then "bold"
-        else null
-      )
-      # NOTE: zsh doesn't support italic yet, but whenever they do this might "just work"
-      # Anyway it sanitizes the input and discards it
-      # https://github.com/zsh-users/zsh-syntax-highlighting/issues/432
-      (
-        if italic
-        then "italic"
-        else null
-      )
-    ]);
+  inherit (lib) mkBefore foldlAttrs mapAttrsToList concatStringsSep;
+  inherit (libConsona) header semantic;
+  inherit (libConsona.transform) codeStyleToZshZle codeStyleToZshZleLowColor;
 
   highlights = {
     # TODO(nenikitov): Add `unknown-token`
@@ -50,26 +22,45 @@
     keywordOperator = ["commandseparator" "command-substitution-delimiter" "process-substitution-delimiter" "arithmetic-expansion" "back-quoted-argument-delimiter" "back-quoted-argument-delimiter-unclosed" "redirection"];
     keywordDelimiter = [];
   };
+
+  # TODO(nenikitov): Refactor this
+  flattenHighlights = builder:
+    foldlAttrs
+    (
+      acc: token: groups:
+        acc
+        // builtins.listToAttrs (
+          builtins.map
+          (g: {
+            name = g;
+            value = builder semantic.code."${token}";
+          })
+          groups
+        )
+    )
+    {}
+    highlights;
+  buildHighlights = builder:
+    concatStringsSep "\n" (mapAttrsToList (k: v: "ZSH_HIGHLIGHT_STYLES+=(${k} '${v}')") (flattenHighlights builder));
 in
   libConsona.mkModule {
     name = ["zsh" "syntaxHighlighting"];
     nameHuman = "zsh syntax highlighting";
     cfg = {
-      programs.zsh.syntaxHighlighting.styles =
-        lib.foldlAttrs
-        (
-          acc: token: groups:
-            acc
-            // builtins.listToAttrs (
-              builtins.map
-              (g: {
-                name = g;
-                value = zshHighlight semantic.code."${token}";
-              })
-              groups
-            )
-        )
-        {}
-        highlights;
+      # HACK(nenikitov): Not sure how, but try to move to `programs.zsh.syntaxHighlighting.styles` instead
+      # This is because I need to write a run-time conditional which isn't possible since home-manager writes the option in single quotes, preventing any injections
+      programs.zsh.initExtra =
+        mkBefore
+        # sh
+        ''
+          # ${header}
+          # Syntax highlighting colors
+          typeset -A ZSH_HIGHLIGHT_STYLES
+          if [[ $(tput colors) -gt 8 ]]; then
+            ${buildHighlights codeStyleToZshZle}
+          else
+            ${buildHighlights codeStyleToZshZleLowColor}
+          fi
+        '';
     };
   }

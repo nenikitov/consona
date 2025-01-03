@@ -83,6 +83,25 @@
             defs);
       };
   };
+  options = {
+    mkColorOption = description:
+      lib.mkOption {
+        inherit description;
+        example = "#C0FFEE";
+        type = types.color;
+      };
+    mkAnsiOption = description:
+      lib.mkOption {
+        inherit description;
+        example = "standoutGreen";
+        type = types.ansi;
+      };
+    mkCodeStyleOption = description: {
+      color = options.mkAnsiOption "Foreground color for ${description}";
+      bold = lib.mkEnableOption "Bold style for ${description}" // {default = false;};
+      italic = lib.mkEnableOption "Italic style for ${description}" // {default = false;};
+    };
+  };
   transform = {
     _parseDigit = c:
       {
@@ -108,7 +127,7 @@
     # TODO(nenikitov): Refactor this to pipes
     _toDec = s: builtins.foldl' (acc: n: acc * 16 + n) 0 (builtins.map transform._parseDigit (lib.stringToCharacters s));
 
-    hexNoHash = {
+    colorToHexNoHash = {
       r,
       g,
       b,
@@ -116,11 +135,53 @@
       toHex = n: lib.fixedWidthString 2 "0" (lib.toHexString n);
     in "${toHex r}${toHex g}${toHex b}";
 
-    hex = c: "#${transform.hexNoHash c}";
+    colorToHex = c: "#${transform.colorToHexNoHash c}";
 
-    ansi = c:
+    colorToAnsi = c:
       if c == "fg" || c == "bg"
       then null
       else (lib.lists.findFirstIndex (c': c == c') null types.ansiList);
+
+    codeStyleToZshZle = {
+      color,
+      bold,
+      italic,
+    }: let
+      concat = list: builtins.concatStringsSep "," (builtins.filter (e: !builtins.isNull e) list);
+      colorAnsi = transform.colorToAnsi color;
+      colorString =
+        if builtins.isNull colorAnsi
+        then "none"
+        else builtins.toString colorAnsi;
+      boldString =
+        if bold
+        then "bold"
+        else null;
+      # NOTE: zsh doesn't support italics yet, but whenever they do this might "just work"
+      # Anyway it sanitizes the input and discards what isn't supported
+      # https://github.com/zsh-users/zsh-syntax-highlighting/issues/432
+      italicString =
+        if italic
+        then "italic"
+        else null;
+    in
+      concat ["fg=${colorString}" boldString italicString];
+
+    codeStyleToZshZleLowColor = {color, ...}: let
+      concat = list: builtins.concatStringsSep "," (builtins.filter (e: !builtins.isNull e) list);
+      colorAnsi = transform.colorToAnsi color;
+      bright = colorAnsi >= 8 && colorAnsi < 16;
+      colorString =
+        if builtins.isNull colorAnsi
+        then "none"
+        else if bright
+        then builtins.toString (colorAnsi - 8)
+        else builtins.toString colorAnsi;
+      boldString =
+        if bright
+        then "bold"
+        else null;
+    in
+      concat ["fg=${colorString}" boldString];
   };
 }

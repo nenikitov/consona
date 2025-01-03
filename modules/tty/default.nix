@@ -1,35 +1,36 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
+  inherit (lib) mkBefore;
   inherit (libConsona) header palette;
-  inherit (libConsona.transform) hexNoHash;
+  inherit (libConsona.transform) colorToHexNoHash;
 in
   libConsona.mkModule {
     name = "tty";
     nameHuman = "TTY";
     cfg = let
       initExtra =
-        lib.mkBefore
+        mkBefore
         # sh
         ''
           # ${header}
           # TTY color scheme
           if [ "''${TERM}" = "linux" ]; then
-            echo -en "\e]P0${hexNoHash palette.bg}"
-            echo -en "\e]P1${hexNoHash palette.red}"
-            echo -en "\e]P2${hexNoHash palette.green}"
-            echo -en "\e]P3${hexNoHash palette.yellow}"
-            echo -en "\e]P4${hexNoHash palette.blue}"
-            echo -en "\e]P5${hexNoHash palette.magenta}"
-            echo -en "\e]P6${hexNoHash palette.cyan}"
-            echo -en "\e]P7${hexNoHash palette.white}"
-            echo -en "\e]P8${hexNoHash palette.standoutBlack}"
-            echo -en "\e]P9${hexNoHash palette.standoutRed}"
-            echo -en "\e]PA${hexNoHash palette.standoutGreen}"
-            echo -en "\e]PB${hexNoHash palette.standoutYellow}"
-            echo -en "\e]PC${hexNoHash palette.standoutBlue}"
-            echo -en "\e]PD${hexNoHash palette.standoutMagenta}"
-            echo -en "\e]PE${hexNoHash palette.standoutCyan}"
-            echo -en "\e]PF${hexNoHash palette.fg}"
+            echo -en "\e]P0${colorToHexNoHash palette.bg}"
+            echo -en "\e]P1${colorToHexNoHash palette.red}"
+            echo -en "\e]P2${colorToHexNoHash palette.green}"
+            echo -en "\e]P3${colorToHexNoHash palette.yellow}"
+            echo -en "\e]P4${colorToHexNoHash palette.blue}"
+            echo -en "\e]P5${colorToHexNoHash palette.magenta}"
+            echo -en "\e]P6${colorToHexNoHash palette.cyan}"
+            echo -en "\e]P7${colorToHexNoHash palette.white}"
+            echo -en "\e]P8${colorToHexNoHash palette.standoutBlack}"
+            echo -en "\e]P9${colorToHexNoHash palette.standoutRed}"
+            echo -en "\e]PA${colorToHexNoHash palette.standoutGreen}"
+            echo -en "\e]PB${colorToHexNoHash palette.standoutYellow}"
+            echo -en "\e]PC${colorToHexNoHash palette.standoutBlue}"
+            echo -en "\e]PD${colorToHexNoHash palette.standoutMagenta}"
+            echo -en "\e]PE${colorToHexNoHash palette.standoutCyan}"
+            echo -en "\e]PF${colorToHexNoHash palette.fg}"
           fi
         '';
     in {
