@@ -37,6 +37,16 @@ in
             text = "CellForeground";
             background = colorToHex (overlayToColor semantic.ui.selection);
           };
+          search = {
+            matches = {
+              foreground = "CellForeground";
+              background = colorToHex (overlayToColor semantic.ui.match);
+            };
+            focused_match = {
+              foreground = "CellForeground";
+              background = colorToHex (overlayToColor semantic.ui.matchCurrent);
+            };
+          };
         };
         # TODO(nenikitov): Add `window.opacity`
       };

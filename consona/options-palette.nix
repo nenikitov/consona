@@ -55,6 +55,8 @@ in {
 
       ui = {
         selection = mkOverlayOption "selection";
+        match = mkOverlayOption "match when searching";
+        matchCurrent = mkOverlayOption "currently selected match when searching";
       };
 
       # TODO(nenikitov): Add UI colors, and more
