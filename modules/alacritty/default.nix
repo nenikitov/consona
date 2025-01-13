@@ -1,7 +1,7 @@
 args: let
   libConsona = import ../../lib args;
-  inherit (libConsona) palette;
-  inherit (libConsona.transform) colorToHex;
+  inherit (libConsona) palette semantic;
+  inherit (libConsona.transform) colorToHex overlayToColor;
 in
   libConsona.mkModule {
     name = "alacritty";
@@ -33,7 +33,10 @@ in
             cyan = colorToHex palette.standoutCyan;
             white = colorToHex palette.standoutWhite;
           };
-          # TODO(nenikitov): Look into changing `selection` colors too
+          selection = {
+            text = "CellForeground";
+            background = colorToHex (overlayToColor semantic.ui.selection);
+          };
         };
         # TODO(nenikitov): Add `window.opacity`
       };

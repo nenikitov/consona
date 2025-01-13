@@ -1,4 +1,23 @@
-{lib, ...}: rec {
+{
+  config,
+  lib,
+  ...
+}: rec {
+  palette = with config.consona.colors.palette; {
+    inherit (primary) "fg" "bg";
+    inherit (normal) "black" "red" "green" "yellow" "blue" "magenta" "cyan" "white";
+    "standoutBlack" = standout.black;
+    "standoutRed" = standout.red;
+    "standoutGreen" = standout.green;
+    "standoutYellow" = standout.yellow;
+    "standoutBlue" = standout.blue;
+    "standoutMagenta" = standout.magenta;
+    "standoutCyan" = standout.cyan;
+    "standoutWhite" = standout.white;
+  };
+  semantic = with config.consona.colors; {
+    inherit code ui;
+  };
   types = {
     ansiList = [
       "black"
@@ -66,21 +85,26 @@
       lib.mkOptionType {
         inherit name description;
         check = x: builtins.any (p: p x != null) parsers;
-        # TODO(nenikitov): Refactor this to pipes
         merge = loc: defs:
           lib.mergeEqualOption
           loc
-          (builtins.map
-            (d:
-              d
-              // {
-                value =
-                  builtins.head
-                  (builtins.filter
-                    (v: v != null)
-                    (builtins.map (p: p d.value) parsers));
-              })
-            defs);
+          (lib.pipe defs [
+            (
+              builtins.map
+              (d:
+                d
+                // {
+                  value =
+                    lib.pipe
+                    parsers
+                    [
+                      (builtins.map (p: p d.value))
+                      (builtins.filter (e: !builtins.isNull e))
+                      builtins.head
+                    ];
+                })
+            )
+          ]);
       };
   };
   options = {
@@ -100,6 +124,22 @@
       color = options.mkAnsiOption "Foreground color for ${description}";
       bold = lib.mkEnableOption "Bold style for ${description}" // {default = false;};
       italic = lib.mkEnableOption "Italic style for ${description}" // {default = false;};
+    };
+    mkOverlayOption = description: {
+      color = options.mkAnsiOption "Overlay color for ${description}";
+      opacity = lib.mkOption {
+        inherit description;
+        example = 0.2;
+        type = lib.types.numbers.between 0 1;
+      };
+    };
+  };
+  operations = {
+    lerpScalar = a: b: t: builtins.floor (a * (1 - t) + b * t);
+    lerp = color1: color2: t: {
+      r = operations.lerpScalar color1.r color2.r t;
+      g = operations.lerpScalar color1.g color2.g t;
+      b = operations.lerpScalar color1.b color2.b t;
     };
   };
   transform = {
@@ -124,8 +164,14 @@
       }
       ."${lib.toUpper c}"
       or (throw "Not a hex digit ${c}");
-    # TODO(nenikitov): Refactor this to pipes
-    _toDec = s: builtins.foldl' (acc: n: acc * 16 + n) 0 (builtins.map transform._parseDigit (lib.stringToCharacters s));
+    _toDec = s:
+      lib.pipe
+      s
+      [
+        lib.stringToCharacters
+        (builtins.map transform._parseDigit)
+        (builtins.foldl' (acc: el: acc * 16 + el) 0)
+      ];
 
     colorToHexNoHash = {
       r,
@@ -147,7 +193,13 @@
       bold,
       italic,
     }: let
-      concat = list: builtins.concatStringsSep "," (builtins.filter (e: !builtins.isNull e) list);
+      concat = list:
+        lib.pipe
+        list
+        [
+          (builtins.filter (e: !builtins.isNull e))
+          (builtins.concatStringsSep ",")
+        ];
       colorAnsi = transform.colorToAnsi color;
       colorString =
         if builtins.isNull colorAnsi
@@ -168,7 +220,13 @@
       concat ["fg=${colorString}" boldString italicString];
 
     codeStyleToZshZleLowColor = {color, ...}: let
-      concat = list: builtins.concatStringsSep "," (builtins.filter (e: !builtins.isNull e) list);
+      concat = list:
+        lib.pipe
+        list
+        [
+          (builtins.filter (e: !builtins.isNull e))
+          (builtins.concatStringsSep ",")
+        ];
       colorAnsi = transform.colorToAnsi color;
       bright = colorAnsi >= 8 && colorAnsi < 16;
       colorString =
@@ -183,5 +241,15 @@
         else null;
     in
       concat ["fg=${colorString}" boldString];
+
+    overlayToColor = {
+      color,
+      opacity,
+      ...
+    }:
+      operations.lerp
+      palette.bg
+      palette."${color}"
+      opacity;
   };
 }

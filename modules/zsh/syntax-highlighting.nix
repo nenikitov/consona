@@ -22,26 +22,31 @@
     keywordOperator = ["commandseparator" "command-substitution-delimiter" "process-substitution-delimiter" "arithmetic-expansion" "back-quoted-argument-delimiter" "back-quoted-argument-delimiter-unclosed" "redirection"];
     keywordDelimiter = [];
   };
-
-  # TODO(nenikitov): Refactor this
   flattenHighlights = builder:
     foldlAttrs
     (
       acc: token: groups:
         acc
-        // builtins.listToAttrs (
-          builtins.map
-          (g: {
+        // lib.pipe
+        groups
+        [
+          (builtins.map (g: {
             name = g;
             value = builder semantic.code."${token}";
-          })
-          groups
-        )
+          }))
+          builtins.listToAttrs
+        ]
     )
     {}
     highlights;
   buildHighlights = builder:
-    concatStringsSep "\n" (mapAttrsToList (k: v: "ZSH_HIGHLIGHT_STYLES+=(${k} '${v}')") (flattenHighlights builder));
+    lib.pipe
+    builder
+    [
+      flattenHighlights
+      (mapAttrsToList (k: v: "ZSH_HIGHLIGHT_STYLES+=(${k} '${v}')"))
+      (concatStringsSep "\n")
+    ];
 in
   libConsona.mkModule {
     name = ["zsh" "syntaxHighlighting"];

@@ -1,7 +1,7 @@
 {lib, ...} @ args: let
   libConsona = import ../lib args;
   inherit (lib) mkEnableOption;
-  inherit (libConsona.options) mkColorOption mkAnsiOption mkCodeStyleOption;
+  inherit (libConsona.options) mkColorOption mkOverlayOption mkCodeStyleOption;
 in {
   options.consona = {
     enable = mkEnableOption "global Consona toggle";
@@ -51,6 +51,10 @@ in {
         keywordLanguage = mkCodeStyleOption "declaration marker, flow control, compiler directive, operator that is a word (`and`, `new`)";
         keywordOperator = mkCodeStyleOption "operator that is a symbol (`=`, `?`, `.`)";
         keywordDelimiter = mkCodeStyleOption "object groups and separators, namespace access";
+      };
+
+      ui = {
+        selection = mkOverlayOption "selection";
       };
 
       # TODO(nenikitov): Add UI colors, and more
