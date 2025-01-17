@@ -1,8 +1,9 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
   inherit (lib) mkBefore foldlAttrs mapAttrsToList concatStringsSep;
-  inherit (libConsona) header semantic;
+  inherit (libConsona) semantic;
   inherit (libConsona.transform) codeStyleToZshZle codeStyleToZshZleLowColor;
+  inherit (libConsona.script) mkScript mkCodeIfElseHighColor;
 
   highlights = {
     # TODO(nenikitov): Add `unknown-token`
@@ -54,18 +55,15 @@ in
     cfg = {
       # HACK(nenikitov): Not sure how, but try to move to `programs.zsh.syntaxHighlighting.styles` instead
       # This is because I need to write a run-time conditional which isn't possible since home-manager writes the option in single quotes, preventing any injections
-      programs.zsh.initExtra =
-        mkBefore
+      programs.zsh.initExtra = mkBefore (mkScript.bash "Syntax highlighting colors"
         # sh
         ''
-          # ${header}
-          # Syntax highlighting colors
           typeset -A ZSH_HIGHLIGHT_STYLES
-          if [[ $(tput colors) -gt 8 ]]; then
-            ${buildHighlights codeStyleToZshZle}
-          else
-            ${buildHighlights codeStyleToZshZleLowColor}
-          fi
-        '';
+          ${
+            mkCodeIfElseHighColor.bash
+            (buildHighlights codeStyleToZshZle)
+            (buildHighlights codeStyleToZshZleLowColor)
+          }
+        '');
     };
   }
