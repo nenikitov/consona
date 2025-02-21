@@ -36,7 +36,7 @@ args: let
   inherit (libConsona) palette;
   inherit (libConsona.transform) hex;
 in
-  libConsona.mkModule {
+  libConsona.mkTarget {
     name = "alacritty";
     nameHuman = "Alacritty";
     cfg = {

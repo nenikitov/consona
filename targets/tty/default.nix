@@ -5,7 +5,7 @@
   inherit (libConsona.transform) colorToHexNoHash;
   inherit (libConsona.script) mkScript mkCodeIfElseHighColor;
 in
-  libConsona.mkModule {
+  libConsona.mkTarget {
     name = "tty";
     nameHuman = "TTY";
     cfg = let

@@ -3,7 +3,7 @@ args: let
   inherit (libConsona) palette semantic;
   inherit (libConsona.transform) colorToHex overlayToColor;
 in
-  libConsona.mkModule {
+  libConsona.mkTarget {
     name = "alacritty";
     nameHuman = "Alacritty";
     cfg = {

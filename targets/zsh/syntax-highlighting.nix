@@ -49,13 +49,14 @@
       (concatStringsSep "\n")
     ];
 in
-  libConsona.mkModule {
+  libConsona.mkTarget {
     name = ["zsh" "syntaxHighlighting"];
     nameHuman = "zsh syntax highlighting";
     cfg = {
       # HACK(nenikitov): Not sure how, but try to move to `programs.zsh.syntaxHighlighting.styles` instead
       # This is because I need to write a run-time conditional which isn't possible since home-manager writes the option in single quotes, preventing any injections
-      programs.zsh.initExtra = mkBefore (mkScript.bash "Syntax highlighting colors"
+      programs.zsh.initExtra = mkBefore (
+        mkScript.bash "Syntax highlighting colors"
         # sh
         ''
           typeset -A ZSH_HIGHLIGHT_STYLES
@@ -64,6 +65,7 @@ in
             (buildHighlights codeStyleToZshZle)
             (buildHighlights codeStyleToZshZleLowColor)
           }
-        '');
+        ''
+      );
     };
   }

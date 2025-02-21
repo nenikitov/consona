@@ -3,7 +3,7 @@
   lib,
   ...
 }: {
-  mkModule = {
+  mkTarget = {
     name,
     nameHuman ? name,
     opts ? {},

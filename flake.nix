@@ -6,6 +6,6 @@
   };
 
   outputs = {...}: {
-    homeManagerModule = import ./consona;
+    homeManagerModule = import ./default.nix;
   };
 }
