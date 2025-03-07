@@ -3,7 +3,8 @@
   lib,
   ...
 }: rec {
-  palette = with config.consona.colors.palette; {
+  configConsona = config.consona;
+  palette = with configConsona.colors.palette; {
     inherit (primary) "fg" "bg";
     inherit (normal) "black" "red" "green" "yellow" "blue" "magenta" "cyan" "white";
     "standoutBlack" = standout.black;
@@ -15,7 +16,7 @@
     "standoutCyan" = standout.cyan;
     "standoutWhite" = standout.white;
   };
-  semantic = with config.consona.colors; {
+  semantic = with configConsona.colors; {
     inherit code ui;
   };
   types = {

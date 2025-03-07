@@ -6,6 +6,7 @@
   mkTarget = {
     name,
     nameHuman ? name,
+    enable ? false,
     opts ? {},
     cfg ? {},
   }: let
@@ -17,7 +18,7 @@
   in {
     options.consona.targets = lib.setAttrByPath nameList (
       {
-        enable = lib.mkEnableOption "theming for ${nameHuman}" // {default = config.consona.autoEnable;};
+        enable = lib.mkEnableOption "theming for ${nameHuman}" // {default = enable || config.consona.autoEnable;};
       }
       // opts
     );

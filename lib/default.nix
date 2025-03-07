@@ -2,11 +2,12 @@
 lib.pipe
 [
   ./color.nix
-  ./module.nix
-  ./util.nix
+  ./font.nix
   ./script.nix
+  ./target.nix
+  ./util.nix
 ]
 [
   (builtins.map (m: import m args))
-  (builtins.foldl' (acc: el: acc // el) {})
+  (builtins.foldl' lib.recursiveUpdate {})
 ]

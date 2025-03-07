@@ -1,11 +1,19 @@
 {lib, ...} @ args: let
   libConsona = import ../lib args;
   inherit (lib) mkEnableOption;
-  inherit (libConsona.options) mkColorOption mkOverlayOption mkCodeStyleOption;
+  inherit (libConsona.options) mkColorOption mkOverlayOption mkCodeStyleOption mkFontOption;
 in {
   options.consona = {
     enable = mkEnableOption "global Consona toggle";
     autoEnable = mkEnableOption "auto enable all style targets";
+
+    fonts = {
+      emoji = mkFontOption "emoji text" false;
+      fallback = mkFontOption "serif, sans-serif, or monospace fallbacks" true;
+      monospace = mkFontOption "monospace text" false;
+      sansSerif = mkFontOption "sans-serif text" false;
+      serif = mkFontOption "serif text" false;
+    };
 
     colors = {
       palette = {
