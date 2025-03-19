@@ -33,10 +33,10 @@ Here is an example module that can be followed as a template
 ```nix
 args: let
   libConsona = import ../../lib args;
-  inherit (libConsona) palette;
+  inherit (libConsona) mkTarget palette;
   inherit (libConsona.transform) hex;
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = "alacritty";
     nameHuman = "Alacritty";
     cfg = {

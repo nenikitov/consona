@@ -1,11 +1,11 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
   inherit (lib) mkBefore;
-  inherit (libConsona) semantic;
+  inherit (libConsona) mkTarget semantic;
   inherit (libConsona.transform) codeStyleToZshZle codeStyleToZshZleLowColor;
   inherit (libConsona.script) mkScript mkCodeIfElseHighColor;
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = ["zsh" "autoSuggestion"];
     nameHuman = "zsh auto suggestion";
     cfg = {

@@ -1,7 +1,7 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
   inherit (lib) mkBefore foldlAttrs mapAttrsToList concatStringsSep;
-  inherit (libConsona) semantic;
+  inherit (libConsona) mkTarget semantic;
   inherit (libConsona.transform) codeStyleToZshZle codeStyleToZshZleLowColor;
   inherit (libConsona.script) mkScript mkCodeIfElseHighColor;
 
@@ -49,7 +49,7 @@
       (concatStringsSep "\n")
     ];
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = ["zsh" "syntaxHighlighting"];
     nameHuman = "zsh syntax highlighting";
     cfg = {

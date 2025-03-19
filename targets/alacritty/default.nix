@@ -1,9 +1,9 @@
 args: let
   libConsona = import ../../lib args;
-  inherit (libConsona) palette semantic;
+  inherit (libConsona) mkTarget palette semantic;
   inherit (libConsona.transform) colorToHex overlayToColor;
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = "alacritty";
     nameHuman = "Alacritty";
     cfg = {

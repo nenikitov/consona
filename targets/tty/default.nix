@@ -1,11 +1,11 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
   inherit (lib) mkBefore;
-  inherit (libConsona) palette;
+  inherit (libConsona) mkTarget palette;
   inherit (libConsona.transform) colorToHexNoHash;
   inherit (libConsona.script) mkScript mkCodeIfElseHighColor;
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = "tty";
     nameHuman = "TTY";
     cfg = let

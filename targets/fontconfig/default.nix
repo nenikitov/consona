@@ -1,6 +1,7 @@
 {lib, ...} @ args: let
   libConsona = import ../../lib args;
   inherit (lib) isList;
+  inherit (libConsona) mkTarget configConsona;
   fontNamesFrom = fonts:
     if isList fonts
     then builtins.map (f: f.name) fonts
@@ -9,9 +10,9 @@
     if isList fonts
     then builtins.map (f: f.package) fonts
     else fontPackagesFrom [fonts];
-  configFonts = libConsona.configConsona.fonts;
+  configFonts = configConsona.fonts;
 in
-  libConsona.mkTarget {
+  mkTarget {
     name = "fontconfig";
     nameHuman = "Fontconfig";
     enable = true;
